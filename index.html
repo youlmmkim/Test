@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Data Dashboard</title>
+<meta name="description" content="국내외 금리·크레딧·환율·헤지 프리미엄 일별 시계열 대시보드">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>📈</text></svg>">
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-row">
+    <h1>Market Data Dashboard</h1>
+    <span class="sub" id="build-info"></span>
+    <span class="spacer"></span>
+    <button class="theme-toggle" id="theme-toggle" type="button">테마 전환</button>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" data-view="overview" aria-selected="true">개요</button>
+    <button class="tab" role="tab" data-view="curve" aria-selected="false">수익률 곡선</button>
+    <button class="tab" role="tab" data-view="series" aria-selected="false">시계열</button>
+    <button class="tab" role="tab" data-view="credit" aria-selected="false">크레딧</button>
+    <button class="tab" role="tab" data-view="fx" aria-selected="false">환율 · 헤지</button>
+    <button class="tab" role="tab" data-view="quality" aria-selected="false">데이터 품질</button>
+  </nav>
+</header>
+
+<main>
+  <div class="view" id="view-overview" role="tabpanel"></div>
+  <div class="view" id="view-curve" role="tabpanel" hidden></div>
+  <div class="view" id="view-series" role="tabpanel" hidden></div>
+  <div class="view" id="view-credit" role="tabpanel" hidden></div>
+  <div class="view" id="view-fx" role="tabpanel" hidden></div>
+  <div class="view" id="view-quality" role="tabpanel" hidden></div>
+</main>
+
+<footer class="page-foot">
+  데이터 출처는 상용 데이터 벤더 일별 추출본이며, 원본 파일과 ETL은 비공개
+  <code>Data</code> 저장소에서 관리됩니다. 이 페이지의 값은 벤더 인코딩
+  아티팩트를 보정한 파생 데이터입니다 &mdash; 보정 내역은
+  <a href="#quality">데이터 품질</a> 탭을 참고하세요.
+</footer>
+
+<!-- Small, always-needed payloads first; the per-category series files are
+     fetched on demand by app.js. Plain <script> rather than fetch() so the
+     page also runs from file://. -->
+<script src="data/manifest.js"></script>
+<script src="data/catalog.js"></script>
+<script src="data/dates.js"></script>
+<script src="assets/charts.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
