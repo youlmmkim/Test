@@ -1,0 +1,360 @@
+/* Market Data Dashboard -- design tokens and layout.
+   Light is the base definition; dark is redefined under both the OS media
+   query and the explicit [data-theme] stamp so the toggle wins either way. */
+
+:root {
+  color-scheme: light;
+
+  --plane:          #f9f9f7;
+  --surface:        #fcfcfb;
+  --surface-sunk:   #f2f1ed;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --grid:           #e1e0d9;
+  --axis:           #c3c2b7;
+  --border:         rgba(11, 11, 11, 0.10);
+  --border-strong:  rgba(11, 11, 11, 0.18);
+
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+  --series-7: #4a3aa7;
+  --series-8: #e34948;
+
+  /* sequential blue, 100 -> 700, for magnitude (credit spread heatmap) */
+  --seq-100: #cde2fb; --seq-200: #9ec5f4; --seq-300: #6da7ec;
+  --seq-400: #3987e5; --seq-500: #256abf; --seq-600: #184f95;
+  --seq-700: #0d366b;
+
+  --up:       #006300;
+  --down:     #d03b3b;
+  --good:     #0ca30c;
+  --warning:  #fab219;
+  --critical: #d03b3b;
+
+  --radius: 10px;
+  --font: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
+          "Malgun Gothic", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --plane:          #0d0d0d;
+    --surface:        #1a1a19;
+    --surface-sunk:   #232322;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --grid:           #2c2c2a;
+    --axis:           #383835;
+    --border:         rgba(255, 255, 255, 0.10);
+    --border-strong:  rgba(255, 255, 255, 0.20);
+
+    --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+    --series-4: #c98500; --series-5: #d55181; --series-6: #008300;
+    --series-7: #9085e9; --series-8: #e66767;
+
+    --seq-100: #0d366b; --seq-200: #184f95; --seq-300: #256abf;
+    --seq-400: #3987e5; --seq-500: #6da7ec; --seq-600: #9ec5f4;
+    --seq-700: #cde2fb;
+
+    --up: #0ca30c;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --plane:          #0d0d0d;
+  --surface:        #1a1a19;
+  --surface-sunk:   #232322;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --grid:           #2c2c2a;
+  --axis:           #383835;
+  --border:         rgba(255, 255, 255, 0.10);
+  --border-strong:  rgba(255, 255, 255, 0.20);
+
+  --series-1: #3987e5; --series-2: #d95926; --series-3: #199e70;
+  --series-4: #c98500; --series-5: #d55181; --series-6: #008300;
+  --series-7: #9085e9; --series-8: #e66767;
+
+  --seq-100: #0d366b; --seq-200: #184f95; --seq-300: #256abf;
+  --seq-400: #3987e5; --seq-500: #6da7ec; --seq-600: #9ec5f4;
+  --seq-700: #cde2fb;
+
+  --up: #0ca30c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--plane);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- header */
+
+.masthead {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px 0;
+}
+.masthead-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+.masthead h1 {
+  margin: 0; font-size: 17px; font-weight: 650; letter-spacing: -0.01em;
+}
+.masthead .sub { color: var(--text-muted); font-size: 12.5px; }
+.masthead .spacer { flex: 1; }
+
+.theme-toggle {
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--text-secondary); border-radius: 999px;
+  padding: 5px 13px; font: inherit; font-size: 12.5px; cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-sunk); color: var(--text-primary); }
+
+.tabs { display: flex; gap: 2px; margin-top: 12px; flex-wrap: wrap; }
+.tab {
+  border: 0; background: none; color: var(--text-secondary);
+  font: inherit; font-size: 13.5px; cursor: pointer;
+  padding: 9px 14px; border-bottom: 2px solid transparent;
+  border-radius: 6px 6px 0 0;
+}
+.tab:hover { background: var(--surface-sunk); color: var(--text-primary); }
+.tab[aria-selected="true"] {
+  color: var(--text-primary); font-weight: 600;
+  border-bottom-color: var(--series-1);
+}
+
+/* ------------------------------------------------------------------ page */
+
+main { padding: 22px 24px 64px; max-width: 1560px; margin: 0 auto; }
+.view[hidden] { display: none !important; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px 18px;
+  margin-bottom: 18px;
+}
+.card > header {
+  display: flex; align-items: baseline; gap: 12px;
+  flex-wrap: wrap; margin-bottom: 14px;
+}
+.card h2 { margin: 0; font-size: 14.5px; font-weight: 650; }
+.card .note { color: var(--text-muted); font-size: 12.5px; margin: 0; }
+.card .spacer { flex: 1; }
+
+.grid { display: grid; gap: 18px; }
+.grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(430px, 1fr)); }
+
+/* ------------------------------------------------------------ stat tiles */
+
+.tiles {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+}
+.tile {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 13px 15px 11px;
+}
+.tile .label {
+  font-size: 12px; color: var(--text-secondary);
+  display: flex; justify-content: space-between; gap: 8px;
+}
+.tile .label .unit { color: var(--text-muted); }
+.tile .value {
+  font-size: 25px; font-weight: 600; letter-spacing: -0.02em;
+  margin: 3px 0 1px; line-height: 1.15;
+}
+.tile .deltas {
+  display: flex; gap: 10px; font-size: 11.5px; flex-wrap: wrap;
+  color: var(--text-secondary); font-variant-numeric: tabular-nums;
+}
+/* each period keeps its arrow and value together when the row wraps */
+.tile .deltas > span { white-space: nowrap; }
+/* Direction is an arrow in ordinary ink: a rising yield is not "good", so it
+   must not borrow the reserved status colours. */
+.tile .deltas b { font-weight: 600; color: var(--text-primary); }
+.tile .spark { margin-top: 7px; height: 30px; }
+
+/* --------------------------------------------------------------- controls */
+
+.controls {
+  display: flex; gap: 10px; align-items: center;
+  flex-wrap: wrap; margin-bottom: 14px;
+}
+.controls label { font-size: 12.5px; color: var(--text-secondary); }
+
+select, input[type="search"], input[type="date"], input[type="text"] {
+  font: inherit; font-size: 13px; color: var(--text-primary);
+  background: var(--surface); border: 1px solid var(--border-strong);
+  border-radius: 7px; padding: 6px 9px;
+}
+select:focus-visible, input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--series-1); outline-offset: 1px;
+}
+
+.segmented {
+  display: inline-flex; border: 1px solid var(--border-strong);
+  border-radius: 7px; overflow: hidden;
+}
+.segmented button {
+  border: 0; background: var(--surface); color: var(--text-secondary);
+  font: inherit; font-size: 12.5px; padding: 6px 11px; cursor: pointer;
+  border-right: 1px solid var(--border);
+}
+.segmented button:last-child { border-right: 0; }
+.segmented button:hover { background: var(--surface-sunk); }
+.segmented button[aria-pressed="true"] {
+  background: var(--series-1); color: #fff; font-weight: 600;
+}
+
+.chip-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--border-strong); border-radius: 999px;
+  padding: 4px 8px 4px 10px; font-size: 12.5px; background: var(--surface);
+}
+.chip .swatch {
+  width: 9px; height: 9px; border-radius: 2px; flex: none;
+}
+.chip button {
+  border: 0; background: none; color: var(--text-muted);
+  cursor: pointer; font: inherit; font-size: 14px; line-height: 1;
+  padding: 0 1px;
+}
+.chip button:hover { color: var(--critical); }
+
+/* ---------------------------------------------------------------- charts */
+
+.chart-wrap { position: relative; }
+.chart-wrap svg { display: block; width: 100%; overflow: visible; }
+.chart-wrap svg text { font-family: var(--font); }
+
+.legend {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin: 2px 0 10px; font-size: 12.5px; color: var(--text-secondary);
+}
+.legend .item { display: inline-flex; align-items: center; gap: 6px; }
+.legend .swatch { width: 11px; height: 3px; border-radius: 2px; }
+
+.tooltip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--surface); color: var(--text-primary);
+  border: 1px solid var(--border-strong); border-radius: 8px;
+  padding: 8px 10px; font-size: 12.5px; min-width: 150px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  font-variant-numeric: tabular-nums;
+}
+.tooltip[hidden] { display: none; }
+.tooltip .tt-date {
+  color: var(--text-muted); font-size: 11.5px; margin-bottom: 5px;
+}
+.tooltip .tt-row {
+  display: flex; align-items: center; gap: 7px;
+  justify-content: space-between; white-space: nowrap;
+}
+.tooltip .tt-row .name { display: inline-flex; align-items: center; gap: 6px; }
+.tooltip .tt-row .swatch { width: 9px; height: 3px; border-radius: 2px; }
+.tooltip .tt-row .num { font-weight: 600; }
+
+/* ---------------------------------------------------------------- tables */
+
+.table-toggle {
+  border: 1px solid var(--border-strong); background: var(--surface);
+  color: var(--text-secondary); border-radius: 7px;
+  padding: 5px 11px; font: inherit; font-size: 12.5px; cursor: pointer;
+}
+.table-toggle:hover { background: var(--surface-sunk); color: var(--text-primary); }
+
+.table-scroll { overflow-x: auto; max-height: 460px; overflow-y: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+th, td {
+  text-align: right; padding: 6px 10px;
+  border-bottom: 1px solid var(--border); white-space: nowrap;
+}
+th:first-child, td:first-child { text-align: left; }
+thead th {
+  position: sticky; top: 0; background: var(--surface);
+  color: var(--text-secondary); font-weight: 600;
+  border-bottom: 1px solid var(--axis); z-index: 1;
+}
+td { font-variant-numeric: tabular-nums; color: var(--text-secondary); }
+td:first-child { color: var(--text-primary); }
+tbody tr:hover td { background: var(--surface-sunk); }
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text-primary); }
+
+.bar-cell {
+  display: inline-block; height: 7px; border-radius: 2px;
+  background: var(--series-1); vertical-align: middle; min-width: 1px;
+}
+
+/* --------------------------------------------------------------- heatmap */
+
+.heat-grid { overflow-x: auto; }
+.heat-legend {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 12px; color: var(--text-secondary); margin-top: 10px;
+}
+.heat-legend .ramp {
+  display: flex; height: 10px; width: 190px;
+  border-radius: 3px; overflow: hidden;
+}
+.heat-legend .ramp span { flex: 1; }
+
+.badge {
+  display: inline-block; padding: 1px 7px; border-radius: 999px;
+  font-size: 11px; font-weight: 600; border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+.badge.warn { color: var(--warning); border-color: var(--warning); }
+.badge.crit { color: var(--critical); border-color: var(--critical); }
+.badge.ok { color: var(--good); border-color: var(--good); }
+
+.empty {
+  padding: 34px 16px; text-align: center;
+  color: var(--text-muted); font-size: 13px;
+}
+
+.loading { padding: 40px 16px; text-align: center; color: var(--text-muted); }
+
+.picker-list {
+  max-height: 260px; overflow-y: auto; border: 1px solid var(--border);
+  border-radius: 8px; margin-top: 8px;
+}
+.picker-list button {
+  display: block; width: 100%; text-align: left; border: 0;
+  background: none; font: inherit; font-size: 12.5px;
+  color: var(--text-primary); padding: 6px 11px; cursor: pointer;
+  border-bottom: 1px solid var(--border);
+}
+.picker-list button:hover { background: var(--surface-sunk); }
+.picker-list button:disabled { color: var(--text-muted); cursor: default; }
+.picker-list .meta { color: var(--text-muted); font-size: 11.5px; }
+
+footer.page-foot {
+  color: var(--text-muted); font-size: 12px;
+  padding: 8px 24px 40px; max-width: 1560px; margin: 0 auto;
+}
+footer.page-foot a { color: var(--text-secondary); }
+
+@media (max-width: 720px) {
+  main { padding: 16px 13px 48px; }
+  .masthead { padding: 12px 13px 0; }
+  .grid.cols-2 { grid-template-columns: 1fr; }
+}
